@@ -1,10 +1,41 @@
 service: aws-node-project
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
   runtime: nodejs18.x
+  # Add Global value for functions
+  timeout: 6
+  memorySize: 256
+  vpc:
+    securityGroupIds:
+      - sg-01afe74077e370e0e
+    subnetIds:
+      - subnet-05f343554a1037ad2
+      - subnet-08fe7e0421d9866bc
+
+  # IAM Policy
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "lambda:*"
+          Resource:
+            - "*"
+  #you can define service wide environment variables here
+  environment:
+    variable1: value1
+    FIRST_NAME: "Pratik"
 
 functions:
   function1:
     handler: index.handler
+    timeout: 6
+    memorySize: 256
+    description: function1 description
+  function2:
+    handler: index.handler
+    description: function2 description
+    environment:
+      FIRST_NAME: "Mota"
